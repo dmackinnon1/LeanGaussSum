@@ -1,0 +1,52 @@
+name: Execute Lean Verification and Save Result
+
+on:
+  workflow-dispatch:
+permissions:
+  contents: write
+
+jobs:
+  verify-lean:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Pull the code from your repository
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: true
+
+    # 2. Set up Lean 4 using elan
+    - name: Set up Lean 4
+      uses: leanprover/lean-action@v1
+      with:
+        # This tells the action to just set up the environment without auto-running tasks
+        build: false 
+
+    # 3. Append #print directive and save the compilation log
+    - name: Run Lean Verification
+      run: |
+        # Append the directive to the target file
+        echo "" >> gauss.lean
+        echo "#print gauss_sum" >> gauss.lean
+        
+        # Execute and output the proof receipt
+        lean gauss.lean > lean_output.txt
+        
+        # Output to console log for visibility
+        cat lean_output.txt
+
+    # 4. Commit and push lean_output.txt back into the repository
+    - name: Commit and Push Proof Receipt
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@://github.com"
+        
+        # Check if lean_output.txt actually changed to avoid empty commit loops
+        if git status --porcelain | grep -q "lean_output.txt"; then
+          git add lean_output.txt
+          git commit -m "chore: update lean_output.txt proof verification token [skip ci]"
+          git push
+        else
+          echo "No changes detected in lean_output.txt"
+        fi

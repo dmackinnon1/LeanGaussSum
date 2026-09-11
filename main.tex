@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{parskip}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\usepackage{amssymb}
+
+\usepackage{fontspec}
+% switch to a monospace font supporting more Unicode characters
+\setmonofont{FreeMono}
+\usepackage{minted}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{minted}
+\definecolor{faintgray}{gray}{0.95} 
+\newmintinline[lean]{lean4}{bgcolor=white}
+\newminted[leancode]{lean4}{fontsize=\footnotesize}
+\usemintedstyle{vs}  
+
+
+\title{Lean Gauss Sum}
+\author{Overleaf Support (Dan M)}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+
+In this short example, we look at the Lean proof of the famous "Gauss sum" identity shown in Equation \ref{eq:gauss}.
+
+\begin{theorem}[Sum of the First $n$ Natural Numbers]
+For all natural numbers $n \in \mathbb{N}$, the sum of the first $n$ natural numbers satisfies the following identity:
+\begin{equation}
+    \sum_{i=0}^{i=n}i = \frac{n(n+1)}{2}
+\end{equation}
+\label{eq:gauss}
+\end{theorem}
+
+\begin{proof}
+We proceed by mathematical induction on $n$. Let $S(n) = \sum_{i=1}^{n} i$. We wish to demonstrate that $2S(n) = n(n+1)$.
+
+When $n = 0$, the sum is empty, yielding $S(0) = 0$. Evaluating both sides of the identity gives:
+\[ 2(0) = 0(0 + 1) = 0 \]
+Thus, the identity holds for $n=0$.
+
+Assume the induction hypothesis holds for an arbitrary natural number $k$. That is, we assume:
+\begin{equation}\label{eq:ih}
+2S(k) = k(k + 1)
+\end{equation}
+We must now show that the identity holds for $k + 1$, meaning we want to prove that:
+\[ 2S(k + 1) = (k + 1)(k + 2) \]
+
+Using the recursive definition of summation, $S(n) = n + n-1 + n-2 + \ldots + 1$, we separate the final term $(k + 1)$ from the rest of the sum:
+\[ S(k + 1) = (k + 1) + S(k) \]
+Multiplying both sides by 2 yields:
+\[ 2S(k + 1) = 2(k + 1) + 2S(k) \]
+By applying our induction hypothesis from Equation~\eqref{eq:ih}, we substitute $2S(k)$ with $k(k + 1)$:
+\[ 2S(k + 1) = 2(k + 1) + k(k + 1) \]
+Factoring out the common term $(k + 1)$ from the right-hand side, we arrive at:
+\[ 2S(k + 1) = (k + 1)(2 + k) = (k + 1)(k + 2) \]
+This completes the inductive step. By the principle of mathematical induction, the identity holds for all natural numbers $n \in \mathbb{N}$.
+\end{proof}
+
+The Lean proof for the Gauss summation identity is provided in Listing \ref{lst:gauss_code}.
+\begin{listing}[!ht]
+\inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss.lean}
+\caption{A Lean proof of the Gauss summation identity}
+\label{lst:gauss_code}
+\end{listing}
+
+
+\end{document}
