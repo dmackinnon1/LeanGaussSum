@@ -26,19 +26,13 @@ jobs:
     - name: Configure Lean Toolchain
       run: elan default stable
 
-    # 3. Append #print directive and save the compilation log
+   # 3. Build project dependencies and verify proof
     - name: Run Lean Verification
       run: |
-        # Append the directive to the target file
-        echo "" >> gauss.lean
-        echo "#print gauss_sum" >> gauss.lean
-        
-        # Execute and output the proof receipt
-        lean gauss.lean > lean_output.txt
-        
-        # Output to console log for visibility
+        lake exe cache get
+        lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
-
+        
     # 4. Commit and push lean_output.txt back into the repository
     - name: Commit and Push Proof Receipt
       run: |
