@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Pull code from repository
+    # 1. Pull repository code
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         persist-credentials: true
 
-    # 2. Set up Lean toolchain without triggering manifest/cache hooks
+    # 2. Set up Lean 4 toolchain
     - name: Set up Lean 4
       uses: leanprover/lean-action@v1
       with:
@@ -25,20 +25,21 @@ jobs:
         auto-config: false
         use-mathlib-cache: false
 
-    # 3. Generate correct native manifest and fetch Mathlib cache explicitly
-    - name: Build Manifest & Environment
+    # 3. Clean stale manifest, build dependencies, and fetch Mathlib binaries
+    - name: Resolve Matching Dependencies & Cache
       run: |
+        rm -f lake-manifest.json
         lake update
         lake exe cache get
 
-    # 4. Run verification and write output receipt
+    # 4. Verify proof and save verification receipt
     - name: Run Lean Verification
       run: |
         lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
 
-    # 5. Commit lean_output.txt and generated lake-manifest.json back to GitHub
-    - name: Commit Proof Receipt and Manifest
+    # 5. Push generated receipt and valid manifest to GitHub for Overleaf sync
+    - name: Commit Proof Receipt and Lake Manifest
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
