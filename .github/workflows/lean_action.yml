@@ -11,23 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout repository
+    # 1. Pull code from repository
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         persist-credentials: true
 
-    # 2. Automatically set up Lean 4, update dependencies, and build
-    - name: Build Lean Project
+    # 2. Native Lean 4 build & dependency resolution
+    - name: Build and Verify Lean Project
       uses: leanprover/lean-action@v1
+      with:
+        manifest-update: true
 
-    # 3. Print the verified proof receipt to lean_output.txt
+    # 3. Capture proof output receipt
     - name: Save Proof Verification Receipt
       run: |
         lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
 
-    # 4. Commit and push back to repository for Overleaf sync
+    # 4. Commit and push back to repo for Overleaf sync
     - name: Commit and Push Proof Receipt
       run: |
         git config --global user.name "github-actions[bot]"
