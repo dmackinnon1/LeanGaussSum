@@ -1,0 +1,33 @@
+name: Bootstrap Lean Manifest
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: true
+
+    - name: Install Elan and Generate Manifest
+      run: |
+        curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain $(cat lean-toolchain)
+        $HOME/.elan/bin/lake update
+        $HOME/.elan/bin/lake exe cache get
+        $HOME/.elan/bin/lake env lean gauss.lean > lean_output.txt
+
+    - name: Commit Manifest and Receipt
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        
+        git add lake-manifest.json lean_output.txt
+        git commit -m "chore: initial bootstrap of lake-manifest.json and lean_output.txt [skip ci]"
+        git push
