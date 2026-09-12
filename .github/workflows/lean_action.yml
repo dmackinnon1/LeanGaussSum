@@ -11,32 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Pull code from repository
+    # 1. Checkout code
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         persist-credentials: true
 
-    # 2. Generate missing manifest so lean-action setup hook passes
-    - name: Bootstrap Lake Manifest
-      run: |
-        curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain $(cat lean-toolchain)
-        echo "$HOME/.elan/bin" >> $GITHUB_PATH
-        lake update
-
-    # 3. Native Lean 4 build & dependency resolution via official action
+    # 2. Native Lean 4 build & dependency resolution
     - name: Build and Verify Lean Project
       uses: leanprover/lean-action@v1
-      with:
-        use-mathlib-cache: auto
 
-    # 4. Capture proof output receipt
+    # 3. Capture proof output receipt
     - name: Save Proof Verification Receipt
       run: |
         lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
 
-    # 5. Commit proof receipt and generated manifest back for Overleaf sync
+    # 4. Commit proof output back to repository for Overleaf sync
     - name: Commit and Push Proof Receipt
       run: |
         git config --global user.name "github-actions[bot]"
@@ -44,8 +35,8 @@ jobs:
         
         if git status --porcelain | grep -qE "lean_output.txt|lake-manifest.json"; then
           git add lean_output.txt lake-manifest.json
-          git commit -m "chore: update proof verification token and manifest [skip ci]"
+          git commit -m "chore: update proof verification receipt [skip ci]"
           git push
         else
-          echo "No changes detected in lean_output.txt or manifest"
+          echo "No changes detected"
         fi
