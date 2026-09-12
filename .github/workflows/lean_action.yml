@@ -11,42 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Pull repository code
+    # 1. Pull code from repository
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         persist-credentials: true
 
-    # 2. Set up Lean 4 toolchain
-    - name: Set up Lean 4
+    # 2. Native Lean 4 build using official action
+    - name: Build and Verify Lean Project
       uses: leanprover/lean-action@v1
-      with:
-        build: false
-        auto-config: false
-        use-mathlib-cache: false
 
-    # 3. Clean stale manifest, build dependencies, and fetch Mathlib binaries
-    - name: Resolve Matching Dependencies & Cache
-      run: |
-        rm -f lake-manifest.json
-        lake update
-        lake exe cache get
-
-    # 4. Verify proof and save verification receipt
-    - name: Run Lean Verification
+    # 3. Capture proof output receipt
+    - name: Save Proof Verification Receipt
       run: |
         lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
 
-    # 5. Push generated receipt and valid manifest to GitHub for Overleaf sync
-    - name: Commit Proof Receipt and Lake Manifest
+    # 4. Commit proof output back to repository for Overleaf sync
+    - name: Commit and Push Proof Receipt
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         
-        if git status --porcelain | grep -qE "lean_output.txt|lake-manifest.json"; then
-          git add lean_output.txt lake-manifest.json
-          git commit -m "chore: update proof verification receipt and lake manifest [skip ci]"
+        if git status --porcelain | grep -q "lean_output.txt"; then
+          git add lean_output.txt
+          git commit -m "chore: update proof verification receipt [skip ci]"
           git push
         else
           echo "No changes detected"
