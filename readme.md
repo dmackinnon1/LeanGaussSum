@@ -36,7 +36,7 @@ When publishing mathematical results, three distinct layers of abstraction work 
 
 ---
 
-## Toolchain Stack
+## Software used
 
 * **Elan:** Lean's version manager (similar to `rustup`). Reads `lean-toolchain` and provisions the correct compiler release.
 * **Lake:** Lean 4's build system and package manager. Reads `lakefile.lean` and resolves external libraries.
