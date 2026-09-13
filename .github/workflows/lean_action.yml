@@ -27,10 +27,12 @@ jobs:
         lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
 
-    # 4. Run kernel replay check and save independent audit token
+    # 4. Clone and run external kernel checker
     - name: Run External Kernel Audit
       run: |
-        lake env leanchecker gauss > leanchecker_output.txt 2>&1 || true
+        git clone https://github.com/leanprover/lean4checker.git .lake/lean4checker
+        (cd .lake/lean4checker && lake build)
+        lake env .lake/lean4checker/.lake/build/bin/lean4checker gauss > leanchecker_output.txt 2>&1 || true
         cat leanchecker_output.txt
 
     # 5. Commit both receipts back to repository for Overleaf sync
