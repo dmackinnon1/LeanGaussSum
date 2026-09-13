@@ -40,7 +40,6 @@ By offloading proof generation to GitHub Actions, authors can ensure their LaTeX
  |
 | **`.github/workflows/init_lean.yml`** | A one-time bootstrap workflow that installs `elan`, runs `lake update`, and generates the initial `lake-manifest.json`. |
 | **`.github/workflows/lean_action.yml`** | The production workflow that runs `leanprover/lean-action@v1` on demand to re-verify proofs and commit updated receipts.
-
  |
 
 ---
