@@ -1,1 +1,1 @@
-'gauss_sum' depends on axioms: [propext, Quot.sound, Classical.choice]
+'gauss_sum' depends on axioms: [propext]
