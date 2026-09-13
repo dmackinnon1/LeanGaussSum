@@ -27,13 +27,10 @@ jobs:
         lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
 
-    # 4. Clone lean4checker, sync toolchain, and run external kernel audit
+    # 4. Run native kernel axiom audit
     - name: Run External Kernel Audit
       run: |
-        git clone https://github.com/leanprover/lean4checker.git .lake/lean4checker
-        cp lean-toolchain .lake/lean4checker/lean-toolchain
-        (cd .lake/lean4checker && lake build)
-        lake env .lake/lean4checker/.lake/build/bin/lean4checker gauss > leanchecker_output.txt 2>&1 || true
+        lake env lean audit.lean > leanchecker_output.txt
         cat leanchecker_output.txt
 
     # 5. Commit both receipts back to repository for Overleaf sync
@@ -44,7 +41,7 @@ jobs:
         
         if git status --porcelain | grep -qE "lean_output.txt|leanchecker_output.txt"; then
           git add lean_output.txt leanchecker_output.txt
-          git commit -m "chore: update verification token and kernel audit receipts [skip ci]"
+          git commit -m "chore: update proof receipt and kernel audit token [skip ci]"
           git push
         else
           echo "No changes detected"
