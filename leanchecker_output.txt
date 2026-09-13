@@ -1,1 +1,4 @@
-error: toolchain 'leanprover/lean4:v4.7.0' does not have the binary `/home/runner/.elan/toolchains/leanprover--lean4---v4.7.0/bin/leanchecker`
+Searching for modules matching: [gauss]
+Found 1 modules to check
+lean4checker found a problem in gauss
+uncaught exception: failed to read file './.lake/build/lib/gauss.olean', incompatible header
