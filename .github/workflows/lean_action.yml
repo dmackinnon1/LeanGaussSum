@@ -17,25 +17,31 @@ jobs:
       with:
         persist-credentials: true
 
-    # 2. Native Lean 4 build using official action
+    # 2. Native Lean 4 build via official action
     - name: Build and Verify Lean Project
       uses: leanprover/lean-action@v1
 
-    # 3. Capture proof output receipt
+    # 3. Capture high-level proof verification receipt
     - name: Save Proof Verification Receipt
       run: |
         lake env lean gauss.lean > lean_output.txt
         cat lean_output.txt
 
-    # 4. Commit proof output back to repository for Overleaf sync
-    - name: Commit and Push Proof Receipt
+    # 4. Run kernel replay check and save independent audit token
+    - name: Run External Kernel Audit
+      run: |
+        lake env leanchecker gauss > leanchecker_output.txt 2>&1 || true
+        cat leanchecker_output.txt
+
+    # 5. Commit both receipts back to repository for Overleaf sync
+    - name: Commit Proof Receipts
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         
-        if git status --porcelain | grep -q "lean_output.txt"; then
-          git add lean_output.txt
-          git commit -m "chore: update proof verification receipt [skip ci]"
+        if git status --porcelain | grep -qE "lean_output.txt|leanchecker_output.txt"; then
+          git add lean_output.txt leanchecker_output.txt
+          git commit -m "chore: update verification token and kernel audit receipts [skip ci]"
           git push
         else
           echo "No changes detected"
