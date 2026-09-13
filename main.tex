@@ -60,13 +60,15 @@ Factoring out the common term $(k + 1)$ from the right-hand side, we arrive at:
 This completes the inductive step. By the principle of mathematical induction, the identity holds for all natural numbers $n \in \mathbb{N}$.
 \end{proof}
 
-The Lean proof script for the Gauss summation identity is provided in Listing \ref{lst:gauss_code}. The proof script expresses the approach taken by the human-oriented proof in the LEAN language. This script is sometimes referred to as the \textit{tactic} script, as, rather than being a proof itself, it describes how the LEAN proof elaborator should build the formal proof. 
+\section{The LEAN proof script}
+The LEAN proof script for the Gauss summation identity is provided in Listing \ref{lst:gauss_code}. The proof script uses the LEAN language to express the approach taken by the human-oriented proof. This script is sometimes referred to as the \textit{tactic} script, as, rather than being a proof itself, it describes how the LEAN proof elaborator should build the formal proof. 
 
 \begin{listing}[!ht]
 \inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss.lean}
 \caption{A Lean proof of the Gauss summation identity}
 \label{lst:gauss_code}
 \end{listing}
+
 
 
 \end{document}
