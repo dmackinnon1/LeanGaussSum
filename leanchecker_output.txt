@@ -1,4 +1,1 @@
-Searching for modules matching: [gauss]
-Found 1 modules to check
-lean4checker found a problem in gauss
-uncaught exception: failed to read file './.lake/build/lib/gauss.olean', incompatible header
+'gauss_sum' depends on axioms: [propext, Quot.sound, Classical.choice]
