@@ -1,12 +1,12 @@
-# Formal Proof Verification Workflow: Lean 4 + Overleaf
+# Using Lean 4 with Overleaf
 
 This repository demonstrates a workflow for integrating formal theorem proving into LaTeX publishing using Overleaf and GitHub Actions.
 
-While Overleaf does not natively compile theorem prover code, Overleaf's **GitHub Sync** feature allows authors to execute Lean 4 verification checks on GitHub runners and pull the resulting proof verification receipts directly back into their LaTeX project.
+While Overleaf does not natively compile theorem prover code, Overleaf's **GitHub Sync** feature allows authors to execute Lean 4 verification checks on GitHub runners and pull the resulting proof verification results directly back into their LaTeX project.
 
 ---
 
-## Conceptual Overview & Goals
+## Overview
 
 When publishing mathematical results, three distinct layers of abstraction work in tandem:
 
@@ -18,9 +18,6 @@ When publishing mathematical results, three distinct layers of abstraction work 
 
 3. **Elaborated Proof Term & Receipt (`lean_output.txt`):** The formal $\lambda$-calculus term checked by Lean's trusted kernel.
 
-
-
-By offloading proof generation to GitHub Actions, authors can ensure their LaTeX paper references a verified, machine-checked artifact without leaving the Overleaf environment.
 
 ---
 
@@ -51,7 +48,7 @@ By offloading proof generation to GitHub Actions, authors can ensure their LaTeX
 * **Mathlib4:** The formal mathematics library providing tactical automation such as `linarith`.
 
 
-* **`leanprover/lean-action@v1`:** Official GitHub Action that handles environment setup, caching, and project execution.
+* **`leanprover/lean-action@v1`:** provided GitHub Action that handles environment setup, caching, and execution.
 
 
 
@@ -59,13 +56,13 @@ By offloading proof generation to GitHub Actions, authors can ensure their LaTeX
 
 ## How the Workflow Operates
 
-1. **Write & Edit:** Authors edit `main.tex` and `gauss.lean` directly in Overleaf or via local Git.
+1. **Write & Edit:** Authors edit `main.tex` and `gauss.lean` directly in Overleaf
 
 
-2. **Trigger Verification:** Pushing changes to GitHub triggers `.github/workflows/lean_action.yml`.
+2. **Trigger Verification:** You need to explicitly run the action on the GitHub side (`workflow_dispatch`) `.github/workflows/lean_action.yml`.
 
 
-3. **Execute & Commit:** GitHub Actions executes Lean, captures `#print gauss_sum` or `#check gauss_sum` output into `lean_output.txt`, and commits the receipt back to the repository.
+3. **Execute & Commit:** GitHub Actions executes Lean, captures `#print gauss_sum` or `#check gauss_sum` output into `lean_output.txt`, and commits the this output back to the repository.
 
 
-4. **Sync Back:** In Overleaf, click **Menu $\rightarrow$ GitHub $\rightarrow$ Pull changes into Overleaf** to fetch the updated `lean_output.txt`, which immediately renders in the PDF compilation.
+4. **Sync Back:** In Overleaf, use GitHub Sync to fetch the updated `lean_output.txt`
