@@ -21,7 +21,7 @@ When publishing mathematical results, three distinct layers of abstraction work 
 
 ---
 
-## Project Structure & Artifacts
+## Artifacts in the project
 
 | File / Artifact | Purpose |
 | --- | --- |
@@ -54,7 +54,7 @@ When publishing mathematical results, three distinct layers of abstraction work 
 
 ---
 
-## How the Workflow Operates
+## How it works
 
 1. **Write & Edit:** Authors edit `main.tex` and `gauss.lean` directly in Overleaf
 
