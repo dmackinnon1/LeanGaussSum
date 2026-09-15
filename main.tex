@@ -12,20 +12,6 @@
 \usepackage[most]{tcolorbox}
 \tcbuselibrary{minted,skins}
 % Define a breakable code box
-\newcommand{\inputbreakableminted}[3]{%
-  % #1 = language, #2 = file path, #3 = title
-  \tcbinputlisting{%
-    listing engine=minted,
-    minted language=#1,
-    listing file={#2},
-    breakable,
-    colback=gray!5!white,
-    colframe=gray!75!black,
-    title={#3},
-    listing only,
-    minted options={fontsize=\small, breaklines}
-  }%
-}
 
 \definecolor{faintgray}{gray}{0.95} 
 \newmintinline[lean]{lean4}{bgcolor=white}
@@ -41,7 +27,7 @@
 \maketitle
 
 
-In this short example, we look at the Lean proof of the well known "Gauss sum" identity shown in Equation \ref{eq:gauss}.
+In this short example, we look at the Lean proof of the well known ``Gauss sum'' identity shown in Equation \ref{eq:gauss}.
 
 \begin{theorem}[Sum of the First $n$ Natural Numbers]
 For all natural numbers $n \in \mathbb{N}$, the sum of the first $n$ natural numbers satisfies the following identity:
@@ -76,8 +62,8 @@ Factoring out the common term $(k + 1)$ from the right-hand side, we arrive at:
 This completes the inductive step. By the principle of mathematical induction, the identity holds for all natural numbers $n \in \mathbb{N}$.
 \end{proof}
 
-\section{The LEAN proof script}
-The LEAN proof script for the Gauss summation identity is provided in Listing \ref{lst:gauss_code}. The proof script uses the LEAN language to express the approach taken by the human-oriented proof. 
+\section{The Lean proof script}
+The Lean proof script for the Gauss summation identity is provided in Listing \ref{lst:gauss_code}. The proof script uses the Lean language to express the approach taken by the human-oriented proof. 
 
 \begin{listing}[!ht]
 \inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss.lean}
@@ -85,34 +71,35 @@ The LEAN proof script for the Gauss summation identity is provided in Listing \r
 \label{lst:gauss_code}
 \end{listing}
 
-A simpler version of the proof is possible by using LEAN \textbf{tactics}, which allows the proof to be written using imperative instructions that are expanded into full proofs by LEAN's elaborator. 
+Another version of the proof script is possible by using Lean \textbf{tactics}, which allows the proof to be written using imperative instructions that are expanded into full proofs by Lean's elaborator. 
 
 \begin{listing}[!ht]
 \inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss-tactic.lean}
-\caption{A alternative LEAN proof script of the Gauss summation identity using tactics}
+\caption{A alternative Lean proof script of the Gauss summation identity using tactics}
 \label{lst:gauss_code2}
 \end{listing}
 
 \section{Compiling the proof script}
 
-Running Listing \ref{lst:gauss_code} with LEAN will generate the formal proof that is provided at the end of this paper. A verification of the proof is provided by running the \texttt{\# print axioms} command against the generated proof. This inspects the compiled result and outputs an explicit list of  axioms used by the proof. Checking the output here shows that the proof relies only on standard axioms and does not use \texttt{sorry} or \texttt{unauthorized} axiom declarations that bypass real proof checking. The output from \texttt{\# print axioms} can be found in Listing \ref{lst:axioms}.
+Running Listing \ref{lst:gauss_code} with Lean will generate the formal proof that is provided in Listing \ref{lst:elaboration_output}. 
 
-\begin{listing}[!ht]
-\inputminted[bgcolor=faintgray,breaklines]{lean4}{leanchecker_output.txt}
-\caption{Output from LEAN axiom checking}
-\label{lst:axioms}
-\end{listing}
-
-The output from \ref{lst:axioms} shows that the proof relies exclusively on core  axioms: Propositional Extensionality (\texttt{propext}). Running Listing \ref{lst:gauss_code2} would add an additional dependency on Quotient Soundness (\texttt{Quot.sound}), and the non-constructive Axiom of Choice (\texttt{Classical.choice}).
-
-%\begin{landscape}
-%\section{Elaborated LEAN proof}
-%\inputbreakableminted{lean4}{lean_output.txt}{LEAN Elaborated Proof}
-%\end{landscape}
+Lean elaborates the proof script (Listing \ref{lst:gauss_code}) into a verified proof term (Listing \ref{lst:elaboration_output}), accompanied by an explicit list of the axioms it requires (Listing \ref{lst:axioms}).
 
 \begin{listing}[!ht]
 \inputminted[bgcolor=faintgray,breaklines]{lean4}{lean_output.txt}
 \caption{The elaborated Lean proof of the Gauss summation identity from Listing \ref{lst:gauss_code}}
 \label{lst:elaboration_output}
 \end{listing}
+
+Checking the output here shows that the proof relies only on standard axioms and does not use \texttt{sorry} or \texttt{unauthorized} axiom declarations that bypass real proof checking. 
+
+\begin{listing}[!ht]
+\inputminted[bgcolor=faintgray,breaklines]{lean4}{leanchecker_output.txt}
+\caption{Output from Lean axiom checking}
+\label{lst:axioms}
+\end{listing}
+
+Listing \ref{lst:axioms} shows that the proof relies exclusively on core  axioms: Propositional Extensionality (\texttt{propext}). Running Listing \ref{lst:gauss_code2} would add an additional dependency on Quotient Soundness (\texttt{Quot.sound}), and the non-constructive Axiom of Choice (\texttt{Classical.choice}).
+
+
 \end{document}
