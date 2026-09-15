@@ -81,7 +81,7 @@ The LEAN proof script for the Gauss summation identity is provided in Listing \r
 
 \begin{listing}[!ht]
 \inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss.lean}
-\caption{A Lean proof of the Gauss summation identity}
+\caption{A Lean proof script of the Gauss summation identity}
 \label{lst:gauss_code}
 \end{listing}
 
@@ -89,7 +89,7 @@ A simpler version of the proof is possible by using LEAN \textbf{tactics}, which
 
 \begin{listing}[!ht]
 \inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss-tactic.lean}
-\caption{A alternative LEAN proof of the Gauss summation identity using tactics}
+\caption{A alternative LEAN proof script of the Gauss summation identity using tactics}
 \label{lst:gauss_code2}
 \end{listing}
 
@@ -103,12 +103,16 @@ Running Listing \ref{lst:gauss_code} with LEAN will generate the formal proof th
 \label{lst:axioms}
 \end{listing}
 
-The output from \ref{lst:axioms} shows that the proof relies exclusively on core foundational axioms: Propositional Extensionality (\texttt{propext}), Quotient Soundness (\texttt{Quot.sound}), and the Axiom of Choice (\texttt{Classical.choice}).
+The output from \ref{lst:axioms} shows that the proof relies exclusively on core  axioms: Propositional Extensionality (\texttt{propext}). Running Listing \ref{lst:gauss_code2} would add an additional dependency on Quotient Soundness (\texttt{Quot.sound}), and the non-constructive Axiom of Choice (\texttt{Classical.choice}).
 
-\begin{landscape}
-\section{Elaborated LEAN proof}
-\inputbreakableminted{lean4}{lean_output.txt}{LEAN Elaborated Proof}
-\end{landscape}
+%\begin{landscape}
+%\section{Elaborated LEAN proof}
+%\inputbreakableminted{lean4}{lean_output.txt}{LEAN Elaborated Proof}
+%\end{landscape}
 
-
+\begin{listing}[!ht]
+\inputminted[bgcolor=faintgray,breaklines]{lean4}{lean_output.txt}
+\caption{The elaborated Lean proof of the Gauss summation identity from Listing \ref{lst:gauss_code}}
+\label{lst:elaboration_output}
+\end{listing}
 \end{document}
