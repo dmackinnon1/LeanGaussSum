@@ -77,12 +77,20 @@ This completes the inductive step. By the principle of mathematical induction, t
 \end{proof}
 
 \section{The LEAN proof script}
-The LEAN proof script for the Gauss summation identity is provided in Listing \ref{lst:gauss_code}. The proof script uses the LEAN language to express the approach taken by the human-oriented proof. This particular script uses \textbf{tactic mode}, which allows the proof to be written using imperitive instructions that are expanded into full proofs by LEAN's elaborator. 
+The LEAN proof script for the Gauss summation identity is provided in Listing \ref{lst:gauss_code}. The proof script uses the LEAN language to express the approach taken by the human-oriented proof. 
 
 \begin{listing}[!ht]
 \inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss.lean}
 \caption{A Lean proof of the Gauss summation identity}
 \label{lst:gauss_code}
+\end{listing}
+
+A simpler version of the proof is possible by using LEAN \textbf{tactics}, which allows the proof to be written using imperative instructions that are expanded into full proofs by LEAN's elaborator. 
+
+\begin{listing}[!ht]
+\inputminted[bgcolor=faintgray,breaklines]{lean4}{gauss-tactic.lean}
+\caption{A alternative LEAN proof of the Gauss summation identity using tactics}
+\label{lst:gauss_code2}
 \end{listing}
 
 \section{Compiling the proof script}
