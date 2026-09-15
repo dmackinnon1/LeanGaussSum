@@ -1,0 +1,14 @@
+theorem gauss_sum : ∀ (n : Nat), 2 * sum_to n = n * (n + 1) :=
+fun x =>
+  Nat.brecOn x fun x f =>
+    (match (motive := ∀ (x : Nat), Nat.below x → 2 * sum_to x = x * (x + 1)) x with
+      | 0 => fun x => rfl
+      | Nat.succ n => fun x =>
+        let_fun ih := x.fst.fst;
+        trans
+          (trans
+            (trans (trans (trans rfl (Nat.left_distrib 2 (sum_to n) (n + 1))) (congrArg (fun x => x + 2 * (n + 1)) ih))
+              (Eq.symm (Nat.add_mul n 2 (n + 1))))
+            (Nat.mul_comm (n + 2) (n + 1)))
+          rfl)
+      f
