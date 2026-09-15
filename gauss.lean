@@ -16,4 +16,5 @@ theorem gauss_sum : ∀ (n : Nat), 2 * sum_to n = n * (n + 1)
       _ = (n + 2) * (n + 1)         := (Nat.add_mul n 2 (n + 1)).symm
       _ = (n + 1) * (n + 2)         := Nat.mul_comm (n + 2) (n + 1)
       _ = (n + 1) * ((n + 1) + 1)   := rfl
+
 #print gauss_sum
